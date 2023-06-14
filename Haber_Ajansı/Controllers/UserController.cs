@@ -1,4 +1,5 @@
-﻿using Entity.Concrete;
+﻿using AutoMapper;
+using Entity.Concrete;
 using Entity.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,14 @@ namespace WebApi.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly IMapper _mapper;
 
-        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
+        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
 
         [HttpPost("Createuser")]
@@ -36,9 +39,10 @@ namespace WebApi.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(appUser, appUserRegisterDto.Password);
+                var success = _mapper.Map<AppUserRegisterDto>(result); 
                 if (result.Succeeded)
                 {
-                    return Ok(result.Succeeded);
+                    return Ok(success);
                 }
             }
             return BadRequest();
