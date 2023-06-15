@@ -19,19 +19,33 @@ namespace DataAccess.Concrete
         {
         }
 
+        public bool Any(Expression<Func<News, bool>> filter)
+        {
+            var result = Anyy(filter);
+            return result;
+        }
+
         public void CreateNews(News news) => Create(news);
 
         public void DeleteNews(News news) => Delete(news);
 
 
-        public List<News> GetAllNews()
+        public List<News> GetListNews(Expression<Func<News, bool>> filter)
         {
-            return GetList();
+            var result = GetList(filter);
+            return result;
         }
 
-        public News GetNews(int id)
+        public List<News> GetAllNews()
         {
-            return Get(b => b.Id == id);
+            var result = GetList();
+            return result;
+        }
+
+        public News GetNews(Expression<Func<News, bool>> filter)
+        {
+            var result = Get(filter);
+            return result;
         }
 
         public void UpdateNews(News news) => Update(news);

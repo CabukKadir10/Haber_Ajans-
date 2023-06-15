@@ -26,7 +26,7 @@ namespace Core.DataAccess.EntityFramework
            _context.Set<T>().Add(entity);
         }
 
-        public bool Any(Expression<Func<T, bool>> filter)
+        public bool Anyy(Expression<Func<T, bool>> filter)
         {
             return _context.Set<T>().Any(filter);
         }

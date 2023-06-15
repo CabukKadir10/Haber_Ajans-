@@ -52,6 +52,9 @@ builder.Services.AddScoped<INewsService, NewsManager>();
 //builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql("Host=localhost;Port=5432; Database=eReconciliationDb; UserName=postgres ; Password=1234;"));
 //builder.Services.AddIdentity<AppUser, AppRole>();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); //burada postgre de hata verdiði için ekledim
+//AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+
 
 var app = builder.Build();
 

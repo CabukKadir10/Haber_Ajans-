@@ -11,5 +11,7 @@ namespace Service.Constans
         public static string addedUser = "Kullanıcı Başarıyla Eklendi";
         public static string deletedUser = "Kullanıcı Başarıyla Silindi";
         public static string updatedUser = "Kullanıcı Başarıyla Güncellendi";
+        public static string ErrorIsDeleted = "Haber zaten silinmiş durumda";
+        public static string NotFound = "Haber bulunamadı";
     }
 }

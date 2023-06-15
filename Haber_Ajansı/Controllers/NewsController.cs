@@ -32,5 +32,17 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
+        [HttpGet("GetNewsById")]
+        public IActionResult GetNewsById(int id)
+        {
+            var result = _serviceManager.NewsService.GetNews(p => p.Id==id);
+            if(result != null)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
     }
 }

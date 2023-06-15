@@ -35,7 +35,7 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            return StatusCode(201);
+            return Ok(result);
         }
 
         [HttpGet("GetById")]
