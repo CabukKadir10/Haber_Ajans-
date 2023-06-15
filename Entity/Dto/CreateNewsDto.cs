@@ -1,13 +1,12 @@
-﻿using Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.Concrete
+namespace Entity.Dto
 {
-    public class News : IEntity
+    public class CreateNewsDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -18,6 +17,5 @@ namespace Entity.Concrete
         public DateTime Date { get; set; } // yükleme tarihi
         public bool IsDeleted { get; set; } = false; //silindi mi
         public int UserId { get; set; }
-        public AppUser User { get; set; }
     }
 }

@@ -13,17 +13,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IAuthService _auth;
+        private readonly IServiceManager _serviceManager;
 
-        public UserController(IAuthService auth)
+        public UserController(IServiceManager serviceManager)
         {
-            _auth = auth;
+            _serviceManager = serviceManager;
         }
 
         [HttpPost("CreateUser")]
         public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegister)
         {
-            var result = await _auth.RegisterUser(userForRegister);
+            var result = await _serviceManager.AuthService.RegisterUser(userForRegister);
 
             if(!result.Succeeded)
             {
@@ -41,7 +41,7 @@ namespace WebApi.Controllers
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(string id)
         {
-            var result = await _auth.GetByIdUser(id);
+            var result = await _serviceManager.AuthService.GetByIdUser(id);
             if(result != null)
             {
                 return Ok(result);

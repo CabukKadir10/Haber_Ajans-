@@ -3,39 +3,37 @@ using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Context;
 using Entity.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
-    public class EfNewsDalll : IEfNewsDal
+    public class EfNewsDal : RepositoryBase<News>, IEfNewsDal
     {
-        public void Create(News news)
+        public EfNewsDal(AppDbContext context) : base(context)
         {
-            throw new NotImplementedException();
         }
 
-        public void Delete(News news)
-        {
-            throw new NotImplementedException();
-        }
+        public void CreateNews(News news) => Create(news);
+
+        public void DeleteNews(News news) => Delete(news);
+
 
         public List<News> GetAllNews()
         {
-            throw new NotImplementedException();
+            return GetList();
         }
 
         public News GetNews(int id)
         {
-            throw new NotImplementedException();
+            return Get(b => b.Id == id);
         }
 
-        public void Update(News news)
-        {
-            throw new NotImplementedException();
-        }
+        public void UpdateNews(News news) => Update(news);
     }
 }

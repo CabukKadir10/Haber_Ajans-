@@ -1,6 +1,8 @@
 using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using DataAccess.Abstract;
+using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework.Context;
 using Entity.Concrete;
 using Microsoft.AspNetCore.Identity;
@@ -40,7 +42,12 @@ builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddScoped<IEfNewsDal, EfNewsDal>();
 builder.Services.AddScoped<IAuthService, AuthManager>();
+builder.Services.AddScoped<INewsService, NewsManager>();
 
 //builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql("Host=localhost;Port=5432; Database=eReconciliationDb; UserName=postgres ; Password=1234;"));
 //builder.Services.AddIdentity<AppUser, AppRole>();

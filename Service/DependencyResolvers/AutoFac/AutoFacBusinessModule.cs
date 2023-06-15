@@ -1,5 +1,7 @@
 ﻿//using Autofac;
 //using AutoMapper;
+//using DataAccess.Abstract;
+//using DataAccess.Concrete;
 //using DataAccess.Concrete.EntityFramework;
 //using Entity.Concrete;
 //using Microsoft.AspNetCore.Identity;
@@ -19,6 +21,10 @@
 //        {
 //            builder.RegisterType<AuthManager>().As<IAuthService>();
 //            builder.RegisterType<Mapper>().As<IMapper>();
+//            builder.RegisterType<EfNewsDal>().As<IEfNewsDal>();
+//            builder.RegisterType<RepositoryManager>().As<IRepositoryManager>();
+//            builder.RegisterType<ServiceManager>().As<IServiceManager>();
+//            builder.RegisterType<NewsManager>().As<INewsService>();
 //        }
 //    }
 //}
