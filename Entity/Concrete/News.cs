@@ -18,6 +18,6 @@ namespace Entity.Concrete
         public DateTime Date { get; set; } // yükleme tarihi
         public bool IsDeleted { get; set; } //silindi mi
         public int UserId { get; set; }
-        public AppUser User { get; set; }
+       // public AppUser User { get; set; }
     }
 }

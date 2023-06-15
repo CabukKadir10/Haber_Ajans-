@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Service.Abstract;
 
 namespace WebApi.Controllers
 {
@@ -12,57 +13,41 @@ namespace WebApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly RoleManager<AppRole> _roleManager;
-        private readonly IMapper _mapper;
+        private readonly IAuthService _auth;
 
-        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IMapper mapper)
+        public UserController(IAuthService auth)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-            _mapper = mapper;
+            _auth = auth;
         }
 
-        [HttpPost("Createuser")]
-        public async Task<IActionResult> CreateUser(AppUserRegisterDto appUserRegisterDto)
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegister)
         {
-            if (ModelState.IsValid)
+            var result = await _auth.RegisterUser(userForRegister);
+
+            if(!result.Succeeded)
             {
-                AppUser appUser = new AppUser()
+                foreach(var error in result.Errors)
                 {
-                    UserName = appUserRegisterDto.UserName,
-                    Name = appUserRegisterDto.Name,
-                    Surname = appUserRegisterDto.Surname,
-                    Email = appUserRegisterDto.Email
-                };
-
-                var result = await _userManager.CreateAsync(appUser, appUserRegisterDto.Password);
-                var success = _mapper.Map<AppUserRegisterDto>(result); 
-                if (result.Succeeded)
-                {
-                    return Ok(success);
+                    ModelState.TryAddModelError(error.Code, error.Description);
                 }
+
+                return BadRequest(ModelState);
             }
-            return BadRequest();
+
+            return StatusCode(201);
         }
 
-        [HttpGet("UserDetail")]
-        public async Task<IActionResult> UserDetail(string userId)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(string id)
         {
-            var result = await _userManager.FindByIdAsync(userId);
+            var result = await _auth.GetByIdUser(id);
             if(result != null)
             {
                 return Ok(result);
             }
+
             return BadRequest();
         }
-
-        //[HttpPost("ChangePassword")]
-        //public async Task<IActionResult> ChangePasswordUser()
-        //{
-
-        //}
     }
 }

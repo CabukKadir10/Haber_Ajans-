@@ -8,7 +8,8 @@ namespace WebApi.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<AppUser, AppUserRegisterDto>().ReverseMap();
+            CreateMap<UserForRegisterDto, AppUser>().ReverseMap();
+            CreateMap<UpdateUserDto, AppUser>().ReverseMap();
         }
     }
 }
