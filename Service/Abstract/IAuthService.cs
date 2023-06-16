@@ -11,7 +11,6 @@ namespace Service.Abstract
 {
     public interface IAuthService
     {
-        Task<IdentityResult> RegisterUser(UserForRegisterDto userForRegister);
         Task<AppUser> GetByIdUser(string id);
     }
 }
