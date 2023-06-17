@@ -13,5 +13,6 @@ namespace Service.Constans
         public static string updatedUser = "Kullanıcı Başarıyla Güncellendi";
         public static string ErrorIsDeleted = "Haber zaten silinmiş durumda";
         public static string NotFound = "Haber bulunamadı";
+        public static string MailSendSuccessful = "mail gönderme başarılı";
     }
 }

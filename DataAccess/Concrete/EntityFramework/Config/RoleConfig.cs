@@ -13,8 +13,7 @@ namespace DataAccess.Concrete.EntityFramework.Config
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
-            builder.HasData
-            (
+            builder.HasData(
                 new IdentityRole
                 {
                     Name = "User",

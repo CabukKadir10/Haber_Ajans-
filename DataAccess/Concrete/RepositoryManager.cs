@@ -22,6 +22,7 @@ namespace DataAccess.Concrete
 
         public IEfNewsDal EfNewsDal => _efNewsDal;
 
+
         public void Save()
         {
             _context.SaveChanges();

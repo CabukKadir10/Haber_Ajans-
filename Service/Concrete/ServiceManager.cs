@@ -11,15 +11,19 @@ namespace Service.Concrete
     {
         private readonly IAuthService _authService;
         private readonly INewsService _newsService;
+    
 
         public ServiceManager(IAuthService authService, INewsService newsService)
         {
             _authService = authService;
             _newsService = newsService;
+           
         }
 
         public IAuthService AuthService => _authService;
 
         public INewsService NewsService => _newsService;
+
+   
     }
 }

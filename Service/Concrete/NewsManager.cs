@@ -2,7 +2,9 @@
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entity.Concrete;
+using Entity.Dto;
 using Service.Abstract;
+using Service.Constans;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,5 +63,7 @@ namespace Service.Concrete
         {
             return _repositoryManager.EfNewsDal.Any(filter);
         }
+
+     
     }
 }

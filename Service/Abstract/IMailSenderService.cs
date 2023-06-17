@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Service.Abstract
 {
-    public interface IServiceManager
+    public interface IMailSenderService
     {
-        IAuthService AuthService { get; }
-        INewsService NewsService { get; }
-   
+        void SendMail(string body);
     }
 }

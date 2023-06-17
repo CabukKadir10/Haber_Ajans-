@@ -14,7 +14,7 @@ namespace DataAccess.Abstract
         void DeleteNews(News news);
         void UpdateNews(News news);
         News GetNews(Expression<Func<News, bool>> filter);
-        List<News> GetListNews(Expression<Func<News, bool>> filter=null);
+        List<News> GetListNews(Expression<Func<News, bool>> filter = null);
         List<News> GetAllNews();
         bool Any(Expression<Func<News, bool>> filter);
     }
