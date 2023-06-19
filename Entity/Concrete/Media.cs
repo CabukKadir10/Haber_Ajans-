@@ -1,4 +1,5 @@
 ﻿using Entity.Abstract;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Entity.Concrete
 {
-    public class Setting : IEntity
+    public class Media : IEntity
     {
         public int Id { get; set; }
-        public bool IsMaintenance { get; set; } = false;
-        public string Description { get; set; }
+        public string FileName { get; set; }
+        public byte[] ImageData { get; set; }
     }
 }

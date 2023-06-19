@@ -17,13 +17,15 @@ namespace WebApi.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
 
-        public UserController(IServiceManager serviceManager, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper)
+        public UserController(IServiceManager serviceManager, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, IAuthService authService)
         {
             _serviceManager = serviceManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
+            _authService = authService;
         }
 
         [HttpPost("CreateUser")]
@@ -32,11 +34,15 @@ namespace WebApi.Controllers
 
             var user = _mapper.Map<AppUser>(userForRegister);
 
-            if( !(_userManager.Users.Any(u => u.PhoneNumber == userForRegister.PhoneNumber)))
+            if(!(_userManager.Users.Any(u => u.PhoneNumber == userForRegister.PhoneNumber)))
             {
-                var result = await _signInManager.UserManager.CreateAsync(user, userForRegister.PasswordHash);
+               // var result = await _signInManager.UserManager.CreateAsync(user, userForRegister.PasswordHash);
+                var result = await _userManager.CreateAsync(user, userForRegister.PasswordHash);
                 if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, userForRegister.Roles);
                     return Ok(result);
+                } 
                 else
                     return BadRequest();
             }
@@ -58,17 +64,19 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("UserLogin")]
-        public async Task<IActionResult> UserLogin(string phoneNumber, string password, string userName)
+        public async Task<IActionResult> UserLogin(string phoneNumber, string password, string userName, int newsId)
         {
           
 
             var user = await _userManager.FindByNameAsync(userName);
+            var token = _authService.CreateAccessToken(user, newsId);
 
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, false);//ilk false web sitesinde görünsün mü görünmesin mi ayarlamasını yapıyor. ikinci false ise 5ten fazla yanlış girilmesi ihtimalinde kullanıcıyı blokluyor.
+                
                 if (result.Succeeded)
-                    return Ok("giriş başarılı");
+                    return Ok(token);
 
                 return BadRequest(error: "telefon veya şifre hatalı");
             }

@@ -3,6 +3,7 @@ using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Context;
 using Entity.Concrete;
+using Entity.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
-    public class EfNewsDal : RepositoryBase<News>, IEfNewsDal
+    public class EfNewsDal : RepositoryBase<News> ,IEfNewsDal
     {
         public EfNewsDal(AppDbContext context) : base(context)
         {
@@ -26,6 +27,7 @@ namespace DataAccess.Concrete
         }
 
         public void CreateNews(News news) => Create(news);
+       
 
         public void DeleteNews(News news) => Delete(news);
 

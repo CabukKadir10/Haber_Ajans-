@@ -1,4 +1,6 @@
-﻿using Entity.Concrete;
+﻿using Core.Utilities.Results.Abstract;
+using Core.Utilities.Security.Jwt;
+using Entity.Concrete;
 using Entity.Dto;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,6 +13,10 @@ namespace Service.Abstract
 {
     public interface IAuthService
     {
-        Task<AppUser> GetByIdUser(string id);
+        //Task<IdentityResult> RegisterUser(UserForRegisterDto userForRegisterDto);
+        //Task<bool> ValidateUser(string UserName, string Password);
+        //Task<string> CreateToken();
+
+        IDataResult<AccessToken> CreateAccessToken(AppUser user, int newsId);
     }
 }

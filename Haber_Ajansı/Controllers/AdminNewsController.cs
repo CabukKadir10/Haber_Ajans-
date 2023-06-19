@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -8,6 +9,7 @@ using Service.Constans;
 
 namespace WebApi.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class AdminNewsController : ControllerBase
@@ -21,6 +23,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("TümHaberler")]
         public IActionResult GetListNews()
         {
@@ -33,10 +36,11 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserDetail")]
-        public async Task<IActionResult> GetUserDetail(string id)
+        public IActionResult GetUserDetail(int id)
         {
-            var result = await _serviceManager.AuthService.GetByIdUser(id);
+            var result =  _serviceManager.NewsService.GetNews(p => p.Id == id);
             if(result != null)
             {
                 return Ok(result);
@@ -45,6 +49,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllIsDeleted")]
         public IActionResult GetAllIsDeleted()
         {
@@ -57,6 +62,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("OnayBekleyen")]
         public IActionResult ApprovalNews()
         {
@@ -69,6 +75,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Onaylanan")]
         public IActionResult Approve()
         {
@@ -81,6 +88,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("BuHaftaEklenenler")]
         public IActionResult AddedThisWeek()
         {
@@ -94,6 +102,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("HardDeleteNews")]
         public IActionResult HardDeleteNews(int id)
         {
@@ -109,6 +118,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("NewsDelete")]
         public  IActionResult NewsDelete(int id)
         {
@@ -126,6 +136,7 @@ namespace WebApi.Controllers
              }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("NewsUpdate")]
         public IActionResult NewsUpdate(int id)
         {

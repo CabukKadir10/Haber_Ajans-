@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Entity.Concrete;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,23 +10,26 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework.Config
 {
-    public class RoleConfig : IEntityTypeConfiguration<IdentityRole>
+    public class RoleConfig : IEntityTypeConfiguration<AppRole>
     {
-        public void Configure(EntityTypeBuilder<IdentityRole> builder)
+        public void Configure(EntityTypeBuilder<AppRole> builder)
         {
             builder.HasData(
-                new IdentityRole
+                new AppRole
                 {
+                    Id = 1,
                     Name = "User",
                     NormalizedName = "USER"
                 },
-                new IdentityRole
+                new AppRole
                 {
+                    Id = 2,
                     Name = "Editor",
                     NormalizedName = "EDITOR"
                 },
-                new IdentityRole
+                new AppRole
                 {
+                    Id=3,
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 }

@@ -1,7 +1,9 @@
 ﻿using DataAccess.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstract;
+using System.Data;
 
 namespace WebApi.Controllers
 {
@@ -18,6 +20,7 @@ namespace WebApi.Controllers
             _repositoryManager = repositoryManager;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("BakımdaMı")]
         public IActionResult Get(int settingId)
         {
@@ -29,6 +32,7 @@ namespace WebApi.Controllers
             return BadRequest(error: "site bakımda");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("BakımaAl")]
         public IActionResult Post(int settingId)
         {
@@ -37,6 +41,7 @@ namespace WebApi.Controllers
             return Ok("site bakıma alındı");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("BakımıBitir")]
         public IActionResult Delete(int settingId)
         {
