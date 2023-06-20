@@ -32,10 +32,10 @@ namespace Service.Concrete
             _userManager = userManager;
         }
 
-        public IDataResult<AccessToken> CreateAccessToken(AppUser user, int newsId)
+        public IDataResult<AccessToken> CreateAccessToken(AppUser user, AppRole role /*int newsId*/)
         {
            // var claims = _userService.GetRoles(p=> p.Id == role.Id);
-            var accessToken = _tokenHelper.CreateToken(user, newsId);
+            var accessToken = _tokenHelper.CreateToken(user, role);
             return new SuccessDataResult<AccessToken>(accessToken);
         }
         //private readonly UserManager<AppUser> _userManager;

@@ -125,6 +125,10 @@ namespace DataAccess.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Roles")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -320,7 +324,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entity.Concrete.News", b =>
                 {
                     b.HasOne("Entity.Concrete.AppUser", "User")
-                        .WithMany()
+                        .WithMany("News")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -377,6 +381,11 @@ namespace DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entity.Concrete.AppUser", b =>
+                {
+                    b.Navigation("News");
                 });
 #pragma warning restore 612, 618
         }

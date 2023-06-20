@@ -17,6 +17,6 @@ namespace Service.Abstract
         //Task<bool> ValidateUser(string UserName, string Password);
         //Task<string> CreateToken();
 
-        IDataResult<AccessToken> CreateAccessToken(AppUser user, int newsId);
+        IDataResult<AccessToken> CreateAccessToken(AppUser user, AppRole role /*int newsId*/);
     }
 }

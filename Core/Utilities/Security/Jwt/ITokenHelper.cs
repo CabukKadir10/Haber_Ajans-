@@ -9,6 +9,6 @@ namespace Core.Utilities.Security.Jwt
 {
     public interface ITokenHelper
     {
-        AccessToken CreateToken(AppUser appUser/*, AppRole appRole*/, int newsId);
+        AccessToken CreateToken(AppUser appUser, AppRole appRole);
     }
 }

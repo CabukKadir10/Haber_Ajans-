@@ -63,7 +63,5 @@ namespace Service.Concrete
         {
             return _repositoryManager.EfNewsDal.Any(filter);
         }
-
-     
     }
 }

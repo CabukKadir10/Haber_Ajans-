@@ -14,5 +14,7 @@ namespace Entity.Concrete
         public string? Surname { get; set; }
         public string? City { get; set; }
         public string? District { get; set; }
+        public string Roles { get; set; }
+        public ICollection<News> News { get; set; }
     }
 }

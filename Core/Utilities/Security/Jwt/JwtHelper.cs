@@ -25,12 +25,12 @@ namespace Core.Utilities.Security.Jwt
             _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
         }
 
-        public AccessToken CreateToken(AppUser appUser/*, AppRole appRole*/, int newsId)
+        public AccessToken CreateToken(AppUser appUser , AppRole appRole)
         {
             _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
             var signinCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
-            var jwt = CreateJwtSecurityToken(_tokenOptions, appUser, signinCredentials/*, appRole*/, newsId);
+            var jwt = CreateJwtSecurityToken(_tokenOptions, appUser, signinCredentials, appRole);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
 
@@ -38,11 +38,11 @@ namespace Core.Utilities.Security.Jwt
             {
                 Token = token,
                 Expiration = _accessTokenExpiration,
-                NewsId = newsId
+                //NewsId = newsId
             };
         }
 
-        public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, AppUser appUser, SigningCredentials signinCredentials, /*AppRole appRole*/ int newsId)
+        public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, AppUser appUser, SigningCredentials signinCredentials, AppRole appRole/*, int newsId*/)
         {
             var jwt = new JwtSecurityToken(
                     issuer: tokenOptions.Issuer,
@@ -56,14 +56,14 @@ namespace Core.Utilities.Security.Jwt
             return jwt;
         }
 
-        private IEnumerable<Claim> SetClaims(AppUser appUser, AppRole appRole, int newsId)
+        private IEnumerable<Claim> SetClaims(AppUser appUser, AppRole appRole/*, int newsId*/)
         {
             var claims = new List<Claim>();
             claims.AddNameIdentityfier(appUser.Id.ToString());
             claims.AddEmail(appUser.Email);
             claims.AddName($"{appUser.Name}");
             claims.AddRoles(appRole.Name);
-            claims.AddNews(newsId.ToString());
+            //claims.AddNews(newsId.ToString());
 
             return claims;
         }

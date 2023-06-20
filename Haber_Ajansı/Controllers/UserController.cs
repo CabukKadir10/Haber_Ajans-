@@ -64,19 +64,21 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("UserLogin")]
-        public async Task<IActionResult> UserLogin(string phoneNumber, string password, string userName, int newsId)
+        public async Task<IActionResult> UserLogin(string phoneNumber, string password, string userName, AppRoleDto role/*, int newsId*/)
         {
-          
-
+            
+            var roles =  _mapper.Map<AppRole>(role);
             var user = await _userManager.FindByNameAsync(userName);
-            var token = _authService.CreateAccessToken(user, newsId);
+            var token = _authService.CreateAccessToken(user, roles);
 
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, false);//ilk false web sitesinde görünsün mü görünmesin mi ayarlamasını yapıyor. ikinci false ise 5ten fazla yanlış girilmesi ihtimalinde kullanıcıyı blokluyor.
-                
-                if (result.Succeeded)
+
+                if (user.Roles == roles.Name && result.Succeeded)
+                {
                     return Ok(token);
+                }
 
                 return BadRequest(error: "telefon veya şifre hatalı");
             }

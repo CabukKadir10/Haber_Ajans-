@@ -66,7 +66,7 @@ namespace WebApi.Controllers
         [HttpGet("OnayBekleyen")]
         public IActionResult ApprovalNews()
         {
-            var result = _serviceManager.NewsService.GetListNews(o => o.Status == "False");
+            var result = _serviceManager.NewsService.GetListNews(o => o.Status == "false");
             if( result != null )
             {
                 return Ok(result);
@@ -79,7 +79,7 @@ namespace WebApi.Controllers
         [HttpGet("Onaylanan")]
         public IActionResult Approve()
         {
-            var result = _serviceManager.NewsService.GetListNews(o => o.Status == "True");
+            var result = _serviceManager.NewsService.GetListNews(o => o.Status == "true");
             if(result != null)
             {
                 return Ok(result);
