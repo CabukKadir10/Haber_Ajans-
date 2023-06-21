@@ -12,50 +12,50 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework
 {
-    public class RepositoryBase<T> : IRepository<T>
-        where T : class, IEntity, new()
-        
+    public class RepositoryBase<TEntity> : IRepository<TEntity>
+        where TEntity : class, IEntity, new()
     {
         private readonly DbContext _context;
         public RepositoryBase(DbContext context)
         {
             _context = context;
         }
-        public void Create(T entity)
+        public void Create(TEntity entity)
         {
-           _context.Set<T>().Add(entity);
+            _context.Add(entity);
         }
 
-        public bool Anyy(Expression<Func<T, bool>> filter)
+        public bool Anyy(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<T>().Any(filter);
+           var result = _context.Set<TEntity>().Any(filter);
+            return result;
         }
 
-        public int Count(Expression<Func<T, bool>> filter)
+        public int Count(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<T>().Count(filter);
+            return _context.Set<TEntity>().Count(filter);
         }
 
-        public void Delete(T entity)
+        public void Delete(TEntity entity)
         {
-            _context.Set<T>().Remove(entity);
+           _context.Remove(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<T>().SingleOrDefault(filter);
+            return _context.Set<TEntity>().SingleOrDefault(filter);
         }
 
-        public List<T> GetList(Expression<Func<T, bool>> filter = null)
+        public List<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null)
         {
             return filter == null
-                    ? _context.Set<T>().ToList()
-                    : _context.Set<T>().Where(filter).ToList();
+                ? _context.Set<TEntity>().ToList()
+                : _context.Set<TEntity>().Where(filter).ToList();
         }
 
-        public void Update(T entity)
+        public void Update(TEntity entity)
         {
-            _context.Set<T>().Update(entity);
+            _context.Set<TEntity>().Update(entity);
         }
     }
 }

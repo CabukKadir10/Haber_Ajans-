@@ -11,8 +11,8 @@ namespace WebApi.AutoMapper
             CreateMap<UserForRegisterDto, AppUser>().ReverseMap();
             CreateMap<UpdateUserDto, AppUser>().ReverseMap();
             CreateMap<CreateNewsDto, News>().ReverseMap();
-            CreateMap<UserLoginDto, AppUser>().ReverseMap();
-            CreateMap<AppRoleDto, AppRole>().ReverseMap();
+           // CreateMap<UserLoginDto, AppUser>().ReverseMap();
+            CreateMap<UserLoginDto, AppRole>().ReverseMap();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace WebApi.Controllers
         {
 
             var user = _mapper.Map<AppUser>(userForRegister);
+           // var roller = _userManager.GetUsersInRoleAsync(userForRegister.Role)
 
             if(!(_userManager.Users.Any(u => u.PhoneNumber == userForRegister.PhoneNumber)))
             {
@@ -64,19 +65,23 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("UserLogin")]
-        public async Task<IActionResult> UserLogin(string phoneNumber, string password, string userName, AppRoleDto role/*, int newsId*/)
+        public async Task<IActionResult> UserLogin(UserLoginDto userLoginDto /*string phoneNumber, string password, string userName, AppRoleDto role*//*, int newsId*/)
         {
             
-            var roles =  _mapper.Map<AppRole>(role);
-            var user = await _userManager.FindByNameAsync(userName);
-            var token = _authService.CreateAccessToken(user, roles);
+            var roles =  _mapper.Map<AppRole>(userLoginDto);
+           // var role = roles.Name;
+            var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
+           // var deneme = user.Roles;
+           // var token = _authService.CreateAccessToken(user, roles);
 
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, password, false, false);//ilk false web sitesinde görünsün mü görünmesin mi ayarlamasını yapıyor. ikinci false ise 5ten fazla yanlış girilmesi ihtimalinde kullanıcıyı blokluyor.
+                var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password, false, false);//ilk false web sitesinde görünsün mü görünmesin mi ayarlamasını yapıyor. ikinci false ise 5ten fazla yanlış girilmesi ihtimalinde kullanıcıyı blokluyor.
 
-                if (user.Roles == roles.Name && result.Succeeded)
+
+                if (result.Succeeded && user.Roles.Equals(roles.Name))
                 {
+                    var token = _authService.CreateAccessToken(user, roles);
                     return Ok(token);
                 }
 

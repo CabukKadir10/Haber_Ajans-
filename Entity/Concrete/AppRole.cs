@@ -10,5 +10,6 @@ namespace Entity.Concrete
 {
     public class AppRole : IdentityRole<int>, IEntity
     {
+       // public ICollection<AppUser> Users { get; set; } 
     }
 }

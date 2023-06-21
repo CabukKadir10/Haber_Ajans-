@@ -15,6 +15,8 @@ namespace Entity.Concrete
         public string? City { get; set; }
         public string? District { get; set; }
         public string Roles { get; set; }
+
+       // public ICollection<AppRole> Roller { get; set; }
         public ICollection<News> News { get; set; }
     }
 }

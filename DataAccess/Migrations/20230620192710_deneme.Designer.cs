@@ -3,6 +3,7 @@ using System;
 using DataAccess.Concrete.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230620192710_deneme")]
+    partial class deneme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,9 +128,8 @@ namespace DataAccess.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Roles")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("RolesId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -150,6 +152,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("RolesId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -176,10 +180,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Districh")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<byte[]>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("bytea");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -323,6 +323,17 @@ namespace DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Entity.Concrete.AppUser", b =>
+                {
+                    b.HasOne("Entity.Concrete.AppRole", "Roles")
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("Entity.Concrete.News", b =>

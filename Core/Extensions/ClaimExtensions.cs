@@ -31,6 +31,10 @@ namespace Core.Extensions
         {
             appRoles.Add(new Claim(ClaimTypes.Name, roles));
         }
+        //public static void AddRoles(this IList<Claim> claims, string[] roles)
+        //{
+        //    roles.ToList().ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
+        //}
 
         public static void AddNews(this ICollection<Claim> appRoles, string news)
         {

@@ -4,6 +4,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Context;
 using Entity.Concrete;
 using Entity.Dto;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace DataAccess.Concrete
         }
 
         public void CreateNews(News news) => Create(news);
-       
+
 
         public void DeleteNews(News news) => Delete(news);
 

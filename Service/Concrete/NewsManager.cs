@@ -63,5 +63,17 @@ namespace Service.Concrete
         {
             return _repositoryManager.EfNewsDal.Any(filter);
         }
+
+        public IResult AddImage(string filePath)
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+            {
+
+            }
+
+            return new SuccessResult();
+        }
     }
 }

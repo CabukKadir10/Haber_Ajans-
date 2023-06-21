@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230620113639_mig1")]
-    partial class mig1
+    [Migration("20230621072050_kullanıcı_rolleri_tanımladım")]
+    partial class kullanıcırolleritanımladım
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AppRoleAppUser", b =>
+                {
+                    b.Property<int>("RollerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RollerId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserRoller", (string)null);
+                });
 
             modelBuilder.Entity("Entity.Concrete.AppRole", b =>
                 {
@@ -324,10 +339,25 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppRoleAppUser", b =>
+                {
+                    b.HasOne("Entity.Concrete.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("RollerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concrete.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entity.Concrete.News", b =>
                 {
                     b.HasOne("Entity.Concrete.AppUser", "User")
-                        .WithMany()
+                        .WithMany("News")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -384,6 +414,11 @@ namespace DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entity.Concrete.AppUser", b =>
+                {
+                    b.Navigation("News");
                 });
 #pragma warning restore 612, 618
         }

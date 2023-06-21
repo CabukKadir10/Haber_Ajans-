@@ -3,6 +3,7 @@ using System;
 using DataAccess.Concrete.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230621073216_deneme21")]
+    partial class deneme21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,10 +179,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Districh")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<byte[]>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("bytea");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");

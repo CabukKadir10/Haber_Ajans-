@@ -28,6 +28,16 @@ namespace DataAccess.Concrete.EntityFramework.Context
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfig());
+
+            //builder.Entity<News>()
+            //    .HasOne(h => h.User)
+            //    .WithMany(k => k.News)
+            //    .HasForeignKey(f => f.UserId);
+
+            //builder.Entity<AppUser>()
+            //    .HasMany(k => k.Roller)
+            //    .WithMany(m => m.Users)
+            //    .UsingEntity(j => j.ToTable("UserRoller")); //3. ara tablo
         }
     }
 }
