@@ -29,7 +29,7 @@ namespace Core.Utilities.Security.Jwt
         {
             _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
-            var signinCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
+            var signinCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey); //kimlik bilgileri alınıyor
             var jwt = CreateJwtSecurityToken(_tokenOptions, appUser, signinCredentials, appRole);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
@@ -56,16 +56,16 @@ namespace Core.Utilities.Security.Jwt
             return jwt;
         }
 
-        private IEnumerable<Claim> SetClaims(AppUser appUser, AppRole appRole/*, int newsId*/)
-        {
-            var claims = new List<Claim>();
-            claims.AddNameIdentityfier(appUser.Id.ToString());
-            claims.AddEmail(appUser.Email);
-            claims.AddName($"{appUser.Name}");
-            claims.AddRoles(appRole.Name);
-            //claims.AddNews(newsId.ToString());
+        //private IEnumerable<Claim> SetClaims(AppUser appUser, AppRole appRole/*, int newsId*/)
+        //{
+        //    var claims = new List<Claim>();
+        //    claims.AddNameIdentityfier(appUser.Id.ToString());
+        //    claims.AddEmail(appUser.Email);
+        //    claims.AddName($"{appUser.Name}");
+        //    claims.AddRoles(appRole.Name);
+        //    //claims.AddNews(newsId.ToString());
 
-            return claims;
-        }
+        //    return claims;
+        //}
     }
 }

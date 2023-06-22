@@ -59,9 +59,9 @@ namespace Service.Concrete
             return new SuccessResult();
         }
 
-        public bool Any(Expression<Func<News, bool>> filter)
+        public IDataResult<bool> Any(Expression<Func<News, bool>> filter)
         {
-            return _repositoryManager.EfNewsDal.Any(filter);
+            return new SuccessDataResult<bool>(_repositoryManager.EfNewsDal.Any(filter));
         }
 
         public IResult AddImage(string filePath)

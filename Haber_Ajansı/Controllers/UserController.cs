@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Entity.Concrete;
 using Entity.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Service.Abstract;
+using System.Data;
 
 namespace WebApi.Controllers
 {
@@ -14,24 +16,31 @@ namespace WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
+        private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly IMapper _mapper;
-        private readonly IAuthService _authService;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public UserController(IServiceManager serviceManager, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, IAuthService authService)
+        public UserController(IServiceManager serviceManager, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
         {
             _serviceManager = serviceManager;
+            _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
-            _mapper = mapper;
-            _authService = authService;
+            _roleManager = roleManager;
         }
 
         [HttpPost("CreateUser")]
         public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegister)
         {
+            AppRole role = new AppRole();
+            role.Name = userForRegister.Roles;
 
+            if (role.Name.Equals("Admin"))
+            {
+                return BadRequest("Admin Olarak Kayıt Oluşturamazsın");
+            }
+            
             var user = _mapper.Map<AppUser>(userForRegister);
            // var roller = _userManager.GetUsersInRoleAsync(userForRegister.Role)
 
@@ -41,17 +50,18 @@ namespace WebApi.Controllers
                 var result = await _userManager.CreateAsync(user, userForRegister.PasswordHash);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, userForRegister.Roles);
+                    var deneme3 = await _userManager.AddToRoleAsync(user, userForRegister.Roles);
+                    //var deneme3 = await _userManager.
                     return Ok(result);
                 } 
                 else
                     return BadRequest();
             }
-
             return BadRequest();
 
         }
 
+        [Authorize(Roles = "User, Editor, Admin")]
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -81,7 +91,7 @@ namespace WebApi.Controllers
 
                 if (result.Succeeded && user.Roles.Equals(roles.Name))
                 {
-                    var token = _authService.CreateAccessToken(user, roles);
+                    var token = _serviceManager.AuthService.CreateAccessToken(user, roles);
                     return Ok(token);
                 }
 
@@ -91,6 +101,7 @@ namespace WebApi.Controllers
             return BadRequest(error: "kayıt bulunamadı");
         }
 
+        [Authorize(Roles = "User, Editor, Admin")]
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
@@ -110,6 +121,7 @@ namespace WebApi.Controllers
             return BadRequest(error: "Kullanıcı bulunamadı");
         }
 
+        [Authorize(Roles = "User, Editor, Admin")]
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
         {
@@ -126,6 +138,7 @@ namespace WebApi.Controllers
             return BadRequest(error: "Hatalı işlem");
         }
 
+        [Authorize(Roles = "User, Editor, Admin")]
         [HttpPost("UpdateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserDto updateUserDto)
         {

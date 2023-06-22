@@ -23,7 +23,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("TümHaberler")]
         public IActionResult GetListNews()
         {
@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUserDetail")]
         public IActionResult GetUserDetail(int id)
         {
@@ -49,7 +49,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAllIsDeleted")]
         public IActionResult GetAllIsDeleted()
         {
@@ -62,7 +62,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("OnayBekleyen")]
         public IActionResult ApprovalNews()
         {
@@ -75,7 +75,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("Onaylanan")]
         public IActionResult Approve()
         {
@@ -88,7 +88,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("BuHaftaEklenenler")]
         public IActionResult AddedThisWeek()
         {
@@ -102,23 +102,23 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("HardDeleteNews")]
         public IActionResult HardDeleteNews(int id)
         {
             var dec = _serviceManager.NewsService.Any(o => o.Id == id);
-            if(dec == true)
+            if(dec.Data == true)
             {
                 var getNews = _serviceManager.NewsService.GetNews(ı => ı.Id == id);
-               var news = _mapper.Map<News>(getNews);
-                var result = _serviceManager.NewsService.DeleteNews(news);
+              // var news = _mapper.Map<News>(getNews);
+                var result = _serviceManager.NewsService.DeleteNews(getNews.Data);
                 return Ok(result);
             }
 
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("NewsDelete")]
         public  IActionResult NewsDelete(int id)
         {
@@ -136,7 +136,7 @@ namespace WebApi.Controllers
              }
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("NewsUpdate")]
         public IActionResult NewsUpdate(int id)
         {

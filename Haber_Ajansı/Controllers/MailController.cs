@@ -1,7 +1,9 @@
 ﻿using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Abstract;
+using System.Data;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -11,13 +13,14 @@ namespace WebApi.Controllers
     [ApiController]
     public class MailController : ControllerBase
     {
-        private readonly IMailSenderService _mailSenderService;
+        private readonly IServiceManager _serviceManager;
 
-        public MailController(IMailSenderService mailSenderService)
+        public MailController(IServiceManager serviceManager)
         {
-            _mailSenderService = mailSenderService;
+            _serviceManager = serviceManager;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("sendMail")]
         public ActionResult Index(Contact model)
         {
@@ -28,7 +31,7 @@ namespace WebApi.Controllers
                 body.AppendLine("E-Mail Adresi: " + model.Email);
                 body.AppendLine("Konu: " + model.Subject);
                 body.AppendLine("Mesaj: " + model.Message);
-                _mailSenderService.SendMail(body.ToString());
+                _serviceManager.MailSenderService.SendMail(body.ToString());
             }
             return Ok("Mail Gönderme Başarılı");
         }

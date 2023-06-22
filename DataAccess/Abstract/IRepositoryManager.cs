@@ -9,6 +9,8 @@ namespace DataAccess.Abstract
     public interface IRepositoryManager
     {
         IEfNewsDal EfNewsDal { get; }
+        IEfSetting EfSetting { get; }
+        IEfUserDal EfUserDal { get; }
         void Save();
     }
 }

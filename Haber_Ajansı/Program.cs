@@ -30,13 +30,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options => //veri tabaný baðlantýsý
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); //burada postgre de hata verdiði için ekledim
+//AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+
+
 //builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddIdentity<AppUser, AppRole>(opt =>
+builder.Services.AddIdentity<AppUser, AppRole>(opt =>//Identity Ayarlamasý
 {
     opt.Password.RequireDigit = true;
     opt.Password.RequireLowercase = false;
@@ -49,26 +53,14 @@ builder.Services.AddAuthentication();
 //builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()); //AutoFac ayarlamalarý yapýldý.
 //builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutoFacBusinessModule()));
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //mapper configurasyonu
 
 
-builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-builder.Services.AddScoped<IServiceManager, ServiceManager>();
-builder.Services.AddScoped<IEfNewsDal, EfNewsDal>();
-builder.Services.AddScoped<IEfUserDal, EfUserDal>();
-builder.Services.AddScoped<IEfSetting, EfSetting>();
-builder.Services.AddScoped<IAuthService, AuthManager>();
-builder.Services.AddScoped<IMailSenderService, MailSenderManager>();
-builder.Services.AddScoped<INewsService, NewsManager>();
-builder.Services.AddScoped<ISettingService, SettingManager>();
-builder.Services.AddScoped<IUserService, UserrManager>();
-builder.Services.AddScoped<ITokenHelper, JwtHelper>();
+builder.Services.ConfigureIOC(); // IOC ayarlamalarýnýn hepsi burada yapýldý.
+
+
 //builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql("Host=localhost;Port=5432; Database=eReconciliationDb; UserName=postgres ; Password=1234;"));
 //builder.Services.AddIdentity<AppUser, AppRole>();
-
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); //burada postgre de hata verdiði için ekledim
-//AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
-
 IConfiguration configuration = builder.Configuration;
 
 builder.Services.AddCors(options =>
@@ -81,7 +73,7 @@ var tokenOptions = configuration.GetSection("TokenOptions").Get<Core.Utilities.S
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters //jwt configurasyonlarý yapýldý
     {
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -92,36 +84,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
     };
 });
-
-//IConfiguration configuration = builder.Configuration;
-
-//builder.Services.AddControllers();
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowOrigin",
-//        builder => builder.WithOrigins("https://localhost:7096"));
-//});
-//#region cors açýklamasý
-////CORS, web tarayýcýsýnýn bir kaynaðýn (örneðin bir web sitesi) belirli bir kaynaða (örneðin bir API) eriþmesine izin vermek veya engellemek için tarayýcý tarafýndan uygulanan bir güvenlik önlemidir.
-////CORS politikalarý, API'lerin veya sunucularýn kaynaklarýna hangi kaynaklardan eriþilebileceðini kontrol etmek için kullanýlýr. Bu þekilde, güvenlik önlemleri alýnýr ve istemcilerin yetkisiz eriþimlerden kaynaklanan güvenlik açýklarýný sömürmesi engellenir.
-//#endregion
-//var tokenOptions = configuration.GetSection("TokenOptions").Get<Core.Utilities.Security.Jwt.TokenOptions>(); //getsection appsetting dosyalarýndaki özelliklere eriþim saðlar.
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = false,
-//        ValidIssuer = tokenOptions.Issuer,
-//        ValidAudience = tokenOptions.Audience,
-//        ValidateIssuerSigningKey = true,
-//        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
-//    };
-//});
-
 
 var app = builder.Build();
 
@@ -138,6 +100,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(builder => builder.WithOrigins("https://localhost:7200").AllowAnyHeader());
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 
 app.UseAuthorization();

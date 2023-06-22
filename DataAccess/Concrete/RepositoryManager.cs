@@ -13,15 +13,20 @@ namespace DataAccess.Concrete
     {
         private readonly AppDbContext _context;
         private readonly IEfNewsDal _efNewsDal;
-
-        public RepositoryManager(AppDbContext context, IEfNewsDal efNewsDal)
+        private readonly IEfSetting _efSetting;
+        private readonly IEfUserDal _efUserDal;
+        public RepositoryManager(AppDbContext context, IEfNewsDal efNewsDal, IEfSetting efSetting, IEfUserDal efUserDal)
         {
             _context = context;
             _efNewsDal = efNewsDal;
+            _efSetting = efSetting;
+            _efUserDal = efUserDal;
         }
-
         public IEfNewsDal EfNewsDal => _efNewsDal;
 
+        public IEfSetting EfSetting => _efSetting;
+
+        public IEfUserDal EfUserDal => _efUserDal;
 
         public void Save()
         {

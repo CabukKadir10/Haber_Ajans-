@@ -11,20 +11,19 @@ namespace WebApi.Controllers
     [ApiController]
     public class SettingController : ControllerBase
     {
-        private readonly ISettingService _settingService;
+        private readonly IServiceManager _serviceManager;
         private readonly IRepositoryManager _repositoryManager;
-
-        public SettingController(ISettingService settingService, IRepositoryManager repositoryManager)
+        public SettingController(IServiceManager serviceManager, IRepositoryManager repositoryManager)
         {
-            _settingService = settingService;
+            _serviceManager = serviceManager;
             _repositoryManager = repositoryManager;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("BakımdaMı")]
         public IActionResult Get(int settingId)
         {
-            if(!(_settingService.IsMaintenance(settingId)))
+            if(!(_serviceManager.SettingService.IsMaintenance(settingId)))
             {
                 return Ok("site bakımda değil");
             }
@@ -32,20 +31,20 @@ namespace WebApi.Controllers
             return BadRequest(error: "site bakımda");
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("BakımaAl")]
         public IActionResult Post(int settingId)
         {
-            _settingService.OnMaintenance(settingId);
+            _serviceManager.SettingService.OnMaintenance(settingId);
             _repositoryManager.Save();
             return Ok("site bakıma alındı");
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("BakımıBitir")]
         public IActionResult Delete(int settingId)
         {
-            _settingService.OfMaintenance(settingId);
+            _serviceManager.SettingService.OfMaintenance(settingId);
             _repositoryManager.Save();
             return Ok("site bakımı Bitirildi");
         }

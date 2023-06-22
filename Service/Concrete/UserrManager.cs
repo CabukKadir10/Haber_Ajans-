@@ -15,16 +15,16 @@ namespace Service.Concrete
 {
     public class UserrManager : IUserService
     {
-        private readonly IEfUserDal _userDal;
+        private readonly IRepositoryManager _repositoryManager;
 
-        public UserrManager(IEfUserDal userDal)
+        public UserrManager(IRepositoryManager repositoryManager)
         {
-            _userDal = userDal;
+            _repositoryManager = repositoryManager;
         }
 
         public IDataResult<AppRole> GetRoles(Expression<Func<AppRole, bool>> filter)
         {
-            return new SuccessDataResult<AppRole>(_userDal.GetRoles(filter));
+            return new SuccessDataResult<AppRole>(_repositoryManager.EfUserDal.GetRoles(filter));
         }
     }
 }

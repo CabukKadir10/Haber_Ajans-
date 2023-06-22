@@ -18,8 +18,7 @@ namespace Service.Abstract
         IDataResult<News> GetNews(Expression<Func<News, bool>> filter);
         IDataResult<List<News>> GetListNews(Expression<Func<News, bool>> filter);
         IDataResult<List<News>> GetAllNews();
-        bool Any(Expression<Func<News, bool>> filter);
-
+        IDataResult<bool> Any(Expression<Func<News, bool>> filter);
         IResult AddImage(string filePath);
     }
 }

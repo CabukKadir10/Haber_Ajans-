@@ -10,6 +10,9 @@ namespace Service.Abstract
     {
         IAuthService AuthService { get; }
         INewsService NewsService { get; }
+        IMailSenderService MailSenderService { get; }
+        ISettingService SettingService { get; }
+        IUserService UserService { get; }
    
     }
 }

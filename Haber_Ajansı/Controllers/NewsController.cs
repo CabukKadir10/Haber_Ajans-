@@ -23,8 +23,6 @@ namespace WebApi.Controllers
             _serviceManager = serviceManager;
             _mapper = mapper;
         }
-
-
         //[HttpGet]
         //public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files)
         //{
@@ -62,7 +60,7 @@ namespace WebApi.Controllers
         [HttpPost("CreateNews")]
         public IActionResult CreateNews([FromForm] CreateNewsDto createNewsDto/*, IFormFile file*/)
         {
-            var deneme = GetByteArrayFromImage(createNewsDto.Image);
+           // var deneme = GetByteArrayFromImage(createNewsDto.Image);
 
             var extension = Path.GetExtension(createNewsDto.Image.FileName);
             var newImageName = Guid.NewGuid() + extension;
@@ -73,7 +71,7 @@ namespace WebApi.Controllers
 
             
             var news = _mapper.Map<News>(createNewsDto);
-            news.ImageUrl = deneme;
+            news.ImageUrl = newImageName;
             var result = _serviceManager.NewsService.CreateNews(news);
             if(result != null)
             {

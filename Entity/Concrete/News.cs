@@ -19,7 +19,7 @@ namespace Entity.Concrete
         public DateTime Date { get; set; } // yükleme tarihi
         public bool IsDeleted { get; set; } = false; //silindi mi
         public int UserId { get; set; }
-        public byte[] ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
         public AppUser User { get; set; }
     }
 }

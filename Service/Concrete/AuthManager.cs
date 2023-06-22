@@ -22,16 +22,11 @@ namespace Service.Concrete
     public class AuthManager : IAuthService
     {
         private readonly ITokenHelper _tokenHelper;
-        private readonly IUserService _userService;
-        private readonly UserManager<AppUser> _userManager;
 
-        public AuthManager(ITokenHelper tokenHelper, IUserService userService, UserManager<AppUser> userManager)
+        public AuthManager(ITokenHelper tokenHelper)
         {
             _tokenHelper = tokenHelper;
-            _userService = userService;
-            _userManager = userManager;
         }
-
         public IDataResult<AccessToken> CreateAccessToken(AppUser user, AppRole role /*int newsId*/)
         {
            // var claims = _userService.GetRoles(p=> p.Id == role.Id);
