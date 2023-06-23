@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Entity.Abstract;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,9 @@ namespace Entity.Concrete
         public string Destcription { get; set; } //açıklama
         public string Status { get; set; } //haber durumu onay bekleme
         public DateTime Date { get; set; } // yükleme tarihi
-        public bool IsDeleted { get; set; } //silindi mi
+        public bool IsDeleted { get; set; } = false; //silindi mi
         public int UserId { get; set; }
+        public string ImageUrl { get; set; }
         public AppUser User { get; set; }
     }
 }

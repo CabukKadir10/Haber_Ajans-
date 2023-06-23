@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Entity.Abstract;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,64 +12,50 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework
 {
-    public class RepositoryBase<TEntity, TContext> : IRepository<TEntity>
+    public class RepositoryBase<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity, new()
-        where TContext : IdentityDbContext, new()
     {
-        public void Add(TEntity entity)
+        private readonly DbContext _context;
+        public RepositoryBase(DbContext context)
         {
-            using (DbContext context = new TContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
+            _context = context;
+        }
+        public void Create(TEntity entity)
+        {
+            _context.Add(entity);
         }
 
-        public bool Any(Expression<Func<TEntity, bool>> filter)
+        public bool Anyy(Expression<Func<TEntity, bool>> filter)
         {
-            using (DbContext context = new TContext())
-            {
-                return context.Set<TEntity>().Any(filter);
-            }
+           var result = _context.Set<TEntity>().Any(filter);
+            return result;
+        }
+
+        public int Count(Expression<Func<TEntity, bool>> filter)
+        {
+            return _context.Set<TEntity>().Count(filter);
         }
 
         public void Delete(TEntity entity)
         {
-            using (DbContext context = new TContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
+           _context.Remove(entity);
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
-            using(DbContext context = new TContext())
-            {
-                return context.Set<TEntity>().SingleOrDefault(filter);
-            }
+            return _context.Set<TEntity>().SingleOrDefault(filter);
         }
 
         public List<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null)
         {
-            using(DbContext context = new TContext())
-            {
-                return filter == null
-                    ? context.Set<TEntity>().ToList()
-                    : context.Set<TEntity>().Where(filter).ToList();
-            }
+            return filter == null
+                ? _context.Set<TEntity>().ToList()
+                : _context.Set<TEntity>().Where(filter).ToList();
         }
 
         public void Update(TEntity entity)
         {
-            using (DbContext context = new TContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
+            _context.Set<TEntity>().Update(entity);
         }
     }
 }

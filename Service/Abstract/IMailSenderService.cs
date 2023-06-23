@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Service.Abstract
 {
-    public interface IEntity
+    public interface IMailSenderService
     {
+        void SendMail(string body);
     }
 }
