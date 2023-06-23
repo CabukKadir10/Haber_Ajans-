@@ -23,29 +23,6 @@ namespace WebApi.Controllers
             _serviceManager = serviceManager;
             _mapper = mapper;
         }
-        //[HttpGet]
-        //public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files)
-        //{
-        //    long size = files.Sum(f => f.Length);
-
-        //    foreach (var formFile in files)
-        //    {
-        //        if (formFile.Length > 0)
-        //        {
-        //            var filePath = Path.GetTempFileName();
-
-        //            using (var stream = System.IO.File.Create(filePath))
-        //            {
-        //                await formFile.CopyToAsync(stream);
-        //            }
-        //        }
-        //    }
-
-        //    // Process uploaded files
-        //    // Don't rely on or trust the FileName property without validation.
-
-        //    return Ok(new { count = files.Count, size });
-        //}
 
         private byte[] GetByteArrayFromImage(IFormFile file)
         {
@@ -67,9 +44,7 @@ namespace WebApi.Controllers
             var location = $"{Directory.GetCurrentDirectory()}/Content/{newImageName}";
             var stream = new FileStream(location, FileMode.Create);
             createNewsDto.Image.CopyTo(stream);
-            // createNewsDto.Image = newImageName;
-
-            
+   
             var news = _mapper.Map<News>(createNewsDto);
             news.ImageUrl = newImageName;
             var result = _serviceManager.NewsService.CreateNews(news);
@@ -79,30 +54,6 @@ namespace WebApi.Controllers
             }
 
             return BadRequest();
-
-            //if (file != null)
-            //{
-            //    var extension = Path.GetExtension(file.FileName);
-            //    var newImageName = Guid.NewGuid() + extension;
-            //    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/", newImageName);
-            //    var stream = new FileStream(location, FileMode.Create);
-            //    file.CopyTo(stream);
-            //    createNewsDto.ImageUrl = newImageName;
-            //}
-
-            //if (file.Length > 0)
-            //{
-            //    var fileName = Guid.NewGuid().ToString() + ".xlsx"; //dosya adı belirledik
-            //    var filePath = $"{Directory.GetCurrentDirectory()}/Content/{fileName}"; //dosya yolunu aldık
-            //    using (FileStream stream = System.IO.File.Create(filePath))
-            //    {
-            //        file.CopyTo(stream);
-            //        stream.Flush();
-            //    }
-
-            //    var deneme = _serviceManager.NewsService.AddImage(filePath);
-            //    createNewsDto.ImageUrl = deneme;
-            //}
         }
 
         [Authorize(Roles = "User, Editor, Admin")]
