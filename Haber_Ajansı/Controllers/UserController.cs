@@ -42,16 +42,13 @@ namespace WebApi.Controllers
             }
             
             var user = _mapper.Map<AppUser>(userForRegister);
-           // var roller = _userManager.GetUsersInRoleAsync(userForRegister.Role)
 
             if(!(_userManager.Users.Any(u => u.PhoneNumber == userForRegister.PhoneNumber)))
             {
-               // var result = await _signInManager.UserManager.CreateAsync(user, userForRegister.PasswordHash);
                 var result = await _userManager.CreateAsync(user, userForRegister.PasswordHash);
                 if (result.Succeeded)
                 {
                     var deneme3 = await _userManager.AddToRoleAsync(user, userForRegister.Roles);
-                    //var deneme3 = await _userManager.
                     return Ok(result);
                 } 
                 else
@@ -79,11 +76,7 @@ namespace WebApi.Controllers
         {
             
             var roles =  _mapper.Map<AppRole>(userLoginDto);
-           // var role = roles.Name;
             var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
-           // var deneme = user.Roles;
-           // var token = _authService.CreateAccessToken(user, roles);
-
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password, false, false);//ilk false web sitesinde görünsün mü görünmesin mi ayarlamasını yapıyor. ikinci false ise 5ten fazla yanlış girilmesi ihtimalinde kullanıcıyı blokluyor.
@@ -132,7 +125,6 @@ namespace WebApi.Controllers
 
                 if (result.Succeeded)
                     return Ok("Şifre değişimi başarılı");
-
             }
 
             return BadRequest(error: "Hatalı işlem");
