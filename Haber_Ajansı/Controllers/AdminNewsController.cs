@@ -110,7 +110,6 @@ namespace WebApi.Controllers
             if(dec.Data == true)
             {
                 var getNews = _serviceManager.NewsService.GetNews(ı => ı.Id == id);
-              // var news = _mapper.Map<News>(getNews);
                 var result = _serviceManager.NewsService.DeleteNews(getNews.Data);
                 return Ok(result);
             }
@@ -123,7 +122,6 @@ namespace WebApi.Controllers
         public  IActionResult NewsDelete(int id)
         {
              var getNews = _serviceManager.NewsService.GetNews(ı => ı.Id == id);
-             //var news = _mapper.Map<News>(getNews);
              if(getNews.Data.IsDeleted == false)
              {
                  getNews.Data.IsDeleted = true;
@@ -141,7 +139,6 @@ namespace WebApi.Controllers
         public IActionResult NewsUpdate(int id)
         {
             var getNews = _serviceManager.NewsService.GetNews(ı => ı.Id == id);
-            //var news = _mapper.Map<News>(getNews);
             if (getNews.Data.IsDeleted == true)
             {
                 getNews.Data.IsDeleted = false;
