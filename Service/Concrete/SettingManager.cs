@@ -18,7 +18,7 @@ namespace Service.Concrete
         }
         public bool IsMaintenance(int settingId)
         {
-            var result = _repositoryManager.EfSetting.Gett(p => p.Id == settingId);
+            var result = _repositoryManager.EfSetting.Get(p => p.Id == settingId);
             if(result.IsMaintenance ==false)
             {
                 return false;
@@ -29,7 +29,7 @@ namespace Service.Concrete
 
         public void OnMaintenance(int settingId)
         {
-            var result = _repositoryManager.EfSetting.Gett(p => p.Id == settingId);
+            var result = _repositoryManager.EfSetting.Get(p => p.Id == settingId);
             if (IsMaintenance(result.Id) == false)
             {
                 result.IsMaintenance = true;
@@ -38,7 +38,7 @@ namespace Service.Concrete
 
         public void OfMaintenance(int settingId)
         {
-            var result = _repositoryManager.EfSetting.Gett(p => p.Id == settingId);
+            var result = _repositoryManager.EfSetting.Get(p => p.Id == settingId);
             if (IsMaintenance(result.Id) == true)
             {
                 result.IsMaintenance = false;

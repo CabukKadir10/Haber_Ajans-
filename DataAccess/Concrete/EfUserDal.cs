@@ -12,17 +12,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
-    public class EfUserDal : RepositoryBase<AppRole>, IEfUserDal
+    public class EfUserDal : RepositoryBase<AppRole, AppDbContext>, IEfUserDal
     {
-        public EfUserDal(AppDbContext context) : base(context)
-        {
+       
 
-        }   
-
-        public AppRole GetRoles(Expression<Func<AppRole, bool>> filter)
-        {
-            var result = Get(filter);
-            return result;
-        }
+        //public AppRole GetRoles(Expression<Func<AppRole, bool>> filter)
+        //{
+        //    var result = Get(filter);
+        //    return result;
+        //}
     }
 }

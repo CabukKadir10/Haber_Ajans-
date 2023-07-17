@@ -24,7 +24,7 @@ namespace Service.Concrete
 
         public IDataResult<AppRole> GetRoles(Expression<Func<AppRole, bool>> filter)
         {
-            return new SuccessDataResult<AppRole>(_repositoryManager.EfUserDal.GetRoles(filter));
+            return new SuccessDataResult<AppRole>(_repositoryManager.EfUserDal.Get(filter));
         }
     }
 }
