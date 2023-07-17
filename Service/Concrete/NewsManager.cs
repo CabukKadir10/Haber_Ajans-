@@ -25,36 +25,36 @@ namespace Service.Concrete
 
         public IResult CreateNews(News news)
         {
-            _repositoryManager.EfNewsDal.CreateNews(news);
+            _repositoryManager.EfNewsDal.Create(news);
             _repositoryManager.Save();
             return new SuccessResult();
         }
 
         public IResult DeleteNews(News news)
         {
-            _repositoryManager.EfNewsDal.DeleteNews(news);
+            _repositoryManager.EfNewsDal.Delete(news);
             _repositoryManager.Save();
             return new SuccessResult();
         }
 
         public IDataResult<List<News>> GetListNews(Expression<Func<News, bool>> filter =null) //bu sorgu ile bize list getirir.
         {
-            return new SuccessDataResult<List<News>>(_repositoryManager.EfNewsDal.GetListNews(filter));
+            return new SuccessDataResult<List<News>>(_repositoryManager.EfNewsDal.GetList(filter));
         }
 
         public IDataResult<List<News>> GetAllNews() //bu sorgusuz tüm haberleri getirir
         {
-            return new SuccessDataResult<List<News>>(_repositoryManager.EfNewsDal.GetAllNews());
+            return new SuccessDataResult<List<News>>(_repositoryManager.EfNewsDal.GetList());
         }
 
         public IDataResult<News> GetNews(Expression<Func<News, bool>> filter)
         {
-           return new SuccessDataResult<News>(_repositoryManager.EfNewsDal.GetNews(filter));
+           return new SuccessDataResult<News>(_repositoryManager.EfNewsDal.Get(filter));
         }
 
         public IResult UpdateNews(News news)
         {
-             _repositoryManager.EfNewsDal.UpdateNews(news);
+             _repositoryManager.EfNewsDal.Update(news);
             _repositoryManager.Save();
             return new SuccessResult();
         }

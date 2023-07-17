@@ -17,6 +17,11 @@ namespace DataAccess.Concrete.EntityFramework.Context
 
         }
 
+        public AppDbContext()
+        {
+
+        }
+
         public DbSet<News> News { get; set; }
         public DbSet<Setting> Setting { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

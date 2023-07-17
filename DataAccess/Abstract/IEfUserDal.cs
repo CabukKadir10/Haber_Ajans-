@@ -1,4 +1,6 @@
-﻿using Entity.Concrete;
+﻿using Core.DataAccess;
+using DataAccess.Concrete.EntityFramework.Context;
+using Entity.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IEfUserDal
+    public interface IEfUserDal : IRepository<AppRole>
     {
-        AppRole GetRoles(Expression<Func<AppRole, bool>> filter);
+        //AppRole GetRoles(Expression<Func<AppRole, bool>> filter);
     }
 }

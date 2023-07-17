@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Entity.Concrete;
 using Entity.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace WebApi.Controllers
 {
@@ -19,6 +21,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateRole")]
         public async Task<IActionResult> CreateRole(CreateRoleDto createRoleDto)
         {
@@ -32,6 +35,7 @@ namespace WebApi.Controllers
             return BadRequest("Rol eklenemedi");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("UpdateRole")]
         public async Task<IActionResult> UpdateRole(UpdateRoleDto updateRoleDto)
         {
@@ -46,6 +50,7 @@ namespace WebApi.Controllers
             return BadRequest("Güncelleme Başarısız");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteRole")]
         public async Task<IActionResult> DeleteRole(string roleId)
         {

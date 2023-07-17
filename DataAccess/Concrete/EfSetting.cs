@@ -13,16 +13,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
-    public class EfSetting : RepositoryBase<Setting>, IEfSetting
+    public class EfSetting : RepositoryBase<Setting, AppDbContext>, IEfSetting
     {
-        public EfSetting(AppDbContext context) : base(context)
-        {
-        }
+        
 
-        public Setting Gett(Expression<Func<Setting, bool>> filter)
-        {
-            var result = Get(filter);
-            return result;
-        }
+        //public Setting Gett(Expression<Func<Setting, bool>> filter)
+        //{
+        //    var result = Get(filter);
+        //    return result;
+        //}
     }
 }

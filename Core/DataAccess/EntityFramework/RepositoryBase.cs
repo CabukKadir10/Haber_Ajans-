@@ -1,8 +1,10 @@
 ﻿using Entity.Abstract;
+using Entity.Concrete;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -12,50 +14,75 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework
 {
-    public class RepositoryBase<TEntity> : IRepository<TEntity>
-        where TEntity : class, IEntity, new()
+    public class RepositoryBase<T, Context> : IRepository<T>
+        where T : class, IEntity, new()
+        where Context : IdentityDbContext<AppUser, AppRole, int>, new()
     {
-        private readonly DbContext _context;
-        public RepositoryBase(DbContext context)
+        public bool Any(Expression<Func<T, bool>> filter)
         {
-            _context = context;
-        }
-        public void Create(TEntity entity)
-        {
-            _context.Add(entity);
+            using (var _context = new Context())
+            {
+                return _context.Set<T>().Any(filter);
+            }
         }
 
-        public bool Anyy(Expression<Func<TEntity, bool>> filter)
+        public int Count(Expression<Func<T, bool>> filter)
         {
-           var result = _context.Set<TEntity>().Any(filter);
-            return result;
+            using (var _context = new Context())
+            {
+                return _context.Set<T>().Count(filter);
+            }
         }
 
-        public int Count(Expression<Func<TEntity, bool>> filter)
+        public void Create(T entity)
         {
-            return _context.Set<TEntity>().Count(filter);
+            using (var _context = new Context())
+            {
+                var addedEntity = _context.Entry(entity);
+                addedEntity.State = EntityState.Added;
+                _context.SaveChanges();
+            }
         }
 
-        public void Delete(TEntity entity)
+        public void Delete(T entity)
         {
-           _context.Remove(entity);
+            using (var _context = new Context())
+            {
+                var deletedEntity = _context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
+                _context.SaveChanges();
+            }
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter)
         {
-            return _context.Set<TEntity>().SingleOrDefault(filter);
+            using (var _context = new Context())
+            {
+                return _context.Set<T>().SingleOrDefault(filter);
+            }
         }
 
-        public List<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null)
+        public List<T> GetList(Expression<Func<T, bool>> filter = null)
         {
-            return filter == null
-                ? _context.Set<TEntity>().ToList()
-                : _context.Set<TEntity>().Where(filter).ToList();
+            using (var _context = new Context())
+            {
+                return filter == null
+                ? _context.Set<T>().ToList()
+                : _context.Set<T>().Where(filter).ToList();
+            }
         }
 
-        public void Update(TEntity entity)
+        public void Update(T entity)
         {
-            _context.Set<TEntity>().Update(entity);
+            using (var _context = new Context())
+            {
+                _context.Update(entity);
+                _context.SaveChanges();
+                // _context.ChangeTracker.Clear();
+                // _context.Entry(entity).State = EntityState.Modified;
+                //// _context.Update(entity);
+                // _context.SaveChanges();
+            }
         }
     }
 }

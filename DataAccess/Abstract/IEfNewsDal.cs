@@ -1,4 +1,5 @@
-﻿using Entity.Concrete;
+﻿using Core.DataAccess;
+using Entity.Concrete;
 using Entity.Dto;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IEfNewsDal
+    public interface IEfNewsDal : IRepository<News>
     {
-        void CreateNews(News news);
-        void DeleteNews(News news);
-        void UpdateNews(News news);
-        News GetNews(Expression<Func<News, bool>> filter);
-        List<News> GetListNews(Expression<Func<News, bool>> filter = null);
-        List<News> GetAllNews();
-        bool Any(Expression<Func<News, bool>> filter);
+        
     }
 }
